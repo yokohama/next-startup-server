@@ -1,20 +1,27 @@
 #!/bin/bash
+#
+# 事前に、.evnファイルに、
+# AWS_REGIONとAWS_ACCOUNT_IDを記入しておく。
+#
 
-REGION=$1
-AWS_ACCOUNT_ID=$2
+AWS_REGION=`cat .env | grep AWS_REGION | awk -F'[=]' '{print $2}'`
+AWS_ACCOUNT_ID=`cat .env | grep AWS_ACCOUNT_ID | awk -F'[=]' '{print $2}'`
 
-REPO_PREFIX=nextstartup-local
-#REPO_PREFIX=nextstartup-dev
-#REPO_PREFIX=nextstartup-prod
+REPO_PREFIX=nextstartupstack-local
+#REPO_PREFIX=nextstartupstack-dev
+#REPO_PREFIX=nextstartupstack-prod
 
 # ECRに対してDockerクライアント認証をする。
-aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com
+aws ecr get-login-password --region ${AWS_REGION} | 
+  docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
 
 # リポジトリのURIを取得
-#REPO_URI=`aws ecr describe-repositories | jq -r '.repositories[].repositoryUri' | grep ${REPO_PREFIX}`
+REPO_URI=`aws ecr describe-repositories | 
+  jq -r '.repositories[].repositoryUri' | 
+  grep ${REPO_PREFIX}`
 
 # イメージにECR用のタグを付ける
-#docker tag ${REPO_URI}:latest
+docker tag ${REPO_URI}:latest
 
 # イメージをERCRにpush
-#docker push ${REPO_URI}:latest
+docker push ${REPO_URI}:latest
