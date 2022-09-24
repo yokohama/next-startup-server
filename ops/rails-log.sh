@@ -11,4 +11,8 @@ LOG_GROUP_NAME=`aws logs describe-log-groups --query 'logGroups[*].logGroupName'
   jq -r '.[]' | 
   grep ${LOG_PREFIX}`
 
-aws logs tail --since 1h --follow ${LOG_GROUP_NAME}
+echo '############'
+echo $LOG_GROUP_NAME
+echo '############'
+
+aws logs tail --since 3h --follow ${LOG_GROUP_NAME}
