@@ -4,8 +4,10 @@
 # AWS_REGIONとAWS_ACCOUNT_IDを記入しておく。
 #
 
-AWS_REGION=`cat .env | grep AWS_REGION | awk -F'[=]' '{print $2}'`
-AWS_ACCOUNT_ID=`cat .env | grep AWS_ACCOUNT_ID | awk -F'[=]' '{print $2}'`
+AWS_REGION=`cat .env.development | grep AWS_REGION | awk -F'[=]' '{print $2}'`
+AWS_ACCOUNT_ID=`cat .env.development | grep AWS_ACCOUNT_ID | awk -F'[=]' '{print $2}'`
+
+IMAGE_ID=`docker images | grep next-startup | awk '{print $3}'`
 
 REPO_PREFIX=nextstartupstack-local
 #REPO_PREFIX=nextstartupstack-dev
@@ -21,7 +23,12 @@ REPO_URI=`aws ecr describe-repositories |
   grep ${REPO_PREFIX}`
 
 # イメージにECR用のタグを付ける
-docker tag ${REPO_URI}:latest
+#docker tag ${IMAGE_ID} ${REPO_URI}:latest
+
+echo ${REPO_URI}
+
+# build & タグ付け
+DOCKER_BUILDKIT=1 docker build . -t ${REPO_URI}
 
 # イメージをERCRにpush
 docker push ${REPO_URI}:latest
