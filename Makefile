@@ -11,6 +11,7 @@ new:
 	ls -la |sed 's/[\t ]\+/\t/g' | cut -f9 | xargs sudo chown -R ${USER}.${USER}
 
   # 必要な設定ファイルの作成
+	cp init/temp/config/application.rb config/
 	cp init/temp/config/environments/development.rb config/environments/
 	echo "$$_database_yml" > config/database.yml
 	echo "$$_dot_env_development" > .env.development
