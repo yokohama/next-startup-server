@@ -9,9 +9,12 @@ AWS_ACCOUNT_ID=`cat .env.development | grep AWS_ACCOUNT_ID | awk -F'[=]' '{print
 
 IMAGE_ID=`docker images | grep next-startup | awk '{print $3}'`
 
-REPO_PREFIX=nextstartupstack-local
-#REPO_PREFIX=nextstartupstack-dev
-#REPO_PREFIX=nextstartupstack-prod
+REPO_PREFIX=ecr-$1
+
+if [ "$1" = "" ]; then
+  echo '[Error] env param required. [ local | dev | prod ]'
+  exit 1
+fi
 
 # ECRに対してDockerクライアント認証をする。
 aws ecr get-login-password --region ${AWS_REGION} | 
