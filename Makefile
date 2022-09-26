@@ -7,9 +7,8 @@ new:
 	# 初回rakeが走るとコケるのでコメント
 	sed -i s/'ENTRYPOINT'/'#ENTRYPOINT'/ Dockerfile
 
-	# Rilsインストール
-	#docker compose run api rails new . --force --api --d=postgresql -T -B --skip-webpack-install
-	docker compose run api rails new . --force --database=postgresql --skip-web-console
+	# Rilsインストール(APIモード)
+	docker compose run api rails new . --force --api --database=postgresql -T -B --skip-webpack-install
 	
 	# 所有者変更
 	ls -la |sed 's/[\t ]\+/\t/g' | cut -f9 | xargs sudo chown -R ${USER}.${USER}
@@ -27,7 +26,7 @@ new:
 	docker compose run api bundle install
 
   # Railsの初期タスクの実行
-	docker compose up db -d
+	docker compose up -d
 	docker compose run api sh -c 'sleep 3 && rake db:create'
 
   # サンプルアプリの作成
@@ -68,6 +67,9 @@ DATABASE_USER=postgres
 DATABASE_PASSWORD=password
 DATABASE_NAME=local_db
 DATABASE_NAME_TEST=test_db
+
+AWS_REGION=
+AWS_ACCOUNT_ID=
 endef
 export _dot_env_development
 

@@ -12,7 +12,9 @@ IMAGE_ID=`docker images | grep next-startup | awk '{print $3}'`
 REPO_PREFIX=ecr-$1
 
 if [ "$1" = "" ]; then
-  echo '[Error] env param required. [ local | dev | prod ]'
+  echo '[Error]'
+  echo '- env param required. [ local | dev | prod ]'
+  echo '- ex) ./init/ecr_init_push.sh local'
   exit 1
 fi
 
