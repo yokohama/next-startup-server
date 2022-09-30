@@ -16,11 +16,16 @@ new:
   # 必要な設定ファイルの作成
 	cp init/temp/config/application.rb config/
 	cp init/temp/config/environments/development.rb config/environments/
+	cp init/temp/config/initializers/cors.rb config/initializers/
+	cp init/temp/app/controllers/application_controller.rb app/controllers
+	cp init/temp/lib/firebase_auth.rb lib/
 	echo "$$_database_yml" > config/database.yml
 	echo "$$_dot_env_development" > .env.development
 
   # 必要なgem、不要なgemの設定&インストール
 	echo gem \'dotenv-rails\' >> Gemfile
+	echo gem \'rack-cors\' >> Gemfile
+	echo gem \'jwt\' >> Gemfile
 	sed -i s/'gem "web-console"'/'# gem "web-console"'/ Gemfile
 	sed -i s/'#ENTRYPOINT'/'ENTRYPOINT'/ Dockerfile
 	docker compose run api bundle install
@@ -70,6 +75,8 @@ DATABASE_NAME_TEST=test_db
 
 AWS_REGION=
 AWS_ACCOUNT_ID=
+
+FIREBASE_PROJECT_ID=
 endef
 export _dot_env_development
 

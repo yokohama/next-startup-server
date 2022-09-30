@@ -38,5 +38,7 @@ module App
 
     # DNSリバインディング攻撃の対処はNLBで行ない、Railsではやらないので以下の設定でクリアする。
     config.middleware.delete ActionDispatch::HostAuthorization
+
+    config.autoload_paths << Rails.root.join("lib")
   end
 end
