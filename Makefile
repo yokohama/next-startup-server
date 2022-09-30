@@ -30,7 +30,7 @@ new:
 	docker compose run api sh -c 'sleep 3 && rake db:create'
 
   # サンプルアプリの作成
-	docker compose run api rails g scaffold pet
+	docker compose run api rails g scaffold user
 	docker compose run api rake db:migrate
 
   # 終了
