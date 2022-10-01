@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: ECR Deploy
-        uses: ./.github/actions/cdk
+        uses: ./.github/actions/deploy
         with:
           env: production
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
